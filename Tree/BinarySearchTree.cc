@@ -56,7 +56,7 @@ public:
 				if (y->parent != node){
 					transplant(root, y, y->right);
 					y->right = node->right;
-					y->right->parent = node;
+					y->right->parent = y;
 				}
 				transplant(root, node, y);
 				y->left = node->left;
