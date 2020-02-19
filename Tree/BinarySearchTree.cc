@@ -41,7 +41,7 @@ public:
 			else root = root->right;
 		}
 		node->parent = y;
-		if (y == nullptr) node = root;
+		if (y == nullptr) root = node;
 		else{
 			if (node->val < y->val) y->left = node;
 			else y->right = node;
