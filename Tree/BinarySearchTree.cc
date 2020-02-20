@@ -8,69 +8,75 @@ struct TreeNode{
 
 class BST{
 public:
-	BST() = default;
+	BST() { root = nullptr; };
 
-	TreeNode* Search(TreeNode *root, int k){
-		while (root){
-			if (root->val == k) return root;
+	TreeNode* getroot(){
+		return this->root;
+	}
+
+	TreeNode* Search(TreeNode *x, int k){
+		while (x){
+			if (x->val == k) return x;
 			else{
-				if (root->val > k) root = root->left;
-				else root = root->right;
+				if (x->val > k) x = x->left;
+				else x = x->right;
 			}
 		}
 		return nullptr;
-		
+
 	}
-	TreeNode* Maximum(TreeNode *root){
-		while (root->right){
-			root = root->right;
+	TreeNode* Maximum(TreeNode *x){
+		while (x->right){
+			x = x->right;
 		}
-		return root;
+		return x;
 	}
-	TreeNode* Minimum(TreeNode *root){
-		while (root->left){
-			root = root->left;
+	TreeNode* Minimum(TreeNode *x){
+		while (x->left){
+			x = x->left;
 		}
-		return root;
+		return x;
 	}
-	void Insert(TreeNode *root, TreeNode *node){
+	void Insert(TreeNode *node){
 		TreeNode *y = nullptr;
-		while (root){
-			y = root;
-			if (node->val < root->val) root = root->left;
-			else root = root->right;
+		TreeNode *x = this->root;
+		while (x){
+			y = x;
+			if (node->val < x->val) x = x->left;
+			else x = x->right;
 		}
 		node->parent = y;
-		if (y == nullptr) root = node;
+		if (y == nullptr) this->root = node;
 		else{
 			if (node->val < y->val) y->left = node;
 			else y->right = node;
 		}
 	}
-	void Delete(TreeNode *root, TreeNode *node){
-		if (node->left == nullptr) transplant(root, node, node->right);
+	void Delete(TreeNode *node){
+		if (node->left == nullptr) transplant(node, node->right);
 		else{
-			if (node->right == nullptr) transplant(root, node, node->left);
+			if (node->right == nullptr) transplant(node, node->left);
 			else{
 				auto y = Minimum(node->right);
 				if (y->parent != node){
-					transplant(root, y, y->right);
+					transplant(y, y->right);
 					y->right = node->right;
 					y->right->parent = y;
 				}
-				transplant(root, node, y);
+				transplant(node, y);
 				y->left = node->left;
 				y->left->parent = y;
 			}
 		}
 	}
 private:
-	void transplant(TreeNode *root, TreeNode *u, TreeNode *v){
-		if (u->parent == nullptr) root = v;
+	void transplant(TreeNode *u, TreeNode *v){
+		if (u->parent == nullptr) this->root = v;
 		else{
 			if (u == u->parent->left) u->parent->left = v;
 			else u->parent->right = v;
 		}
 		if (v != nullptr) v->parent = u->parent;
 	}
+	TreeNode *root;
 };
