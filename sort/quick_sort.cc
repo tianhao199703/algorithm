@@ -1,4 +1,7 @@
 int split(vector<int> &a, int low, int high){
+	//随机选一个pivot
+	//srand((int)time(0));
+	//rand()%(high-low);
 	int i = low, x = a[low];
 	for (int j = low + 1; j <= high; j++){
 		if (a[j] <= x){
