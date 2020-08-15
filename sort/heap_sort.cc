@@ -1,52 +1,29 @@
-int parent(int i){
-	return i / 2;
-}
-int left(int i){
-	return 2 * i + 1;
-}
-int right(int i){
-	return 2 * i + 2;
-}
-
-void max_heapfy(vector<int> &a, int index,int size){
-	int l = left(index), r = right(index),n=a.size(),largest;
-	while (l < size) {
-		if (a[l] < a[r] && r < size) {
-			largest = r;
-		}
-		else {
-			largest = l;
-		}
-		if (a[index] > a[largest]) {
-			largest = index;
-		}
-		if (index == largest) {
-			break;
-		}
-		swap(a[largest], a[index]);
-		index = largest;
-		l = left(index);
-		r = right(index);
-	}
+void max_heapfy(vector<int> &a, int i,int size){
+	int l = i * 2 + 1, r = i * 2 + 2, largest = i;
+        if (l < heapSize && a[l] > a[largest]) {
+            largest = l;
+        } 
+        if (r < heapSize && a[r] > a[largest]) {
+            largest = r;
+        }
+        if (largest != i) {
+            swap(a[i], a[largest]);
+            maxHeapify(a, largest, heapSize);
+        }
 }
 
-void build_max_heap(vector<int> &a){
-	for (int i = 0; i < a.size(); i++) {
-		int curidx = i;
-		int pidx = parent(i);
-		while (a[curidx] > a[pidx]) {
-			swap(a[curidx], a[pidx]);
-			curidx = pidx;
-			pidx = parent(curidx);
-		}
-	}
+void build_max_heap(vector<int> &a, int heapSize){
+	for (int i = heapSize / 2; i >= 0; --i) {
+            maxHeapify(a, i, heapSize);
+        }
 }
 
 void heap_sort(vector<int> a){
 	int n = a.size();
-	build_max_heap(a);
-	for (int i = n-1; i > 0; i--){
-		swap(a[0], a[i]);
-		max_heapfy(a, 0, i);
-	}
+	build_max_heap(a, n);
+	for (int i = nums.size() - 1; i > 0; --i) {
+            swap(nums[0], nums[i]);
+            --heapSize;
+            maxHeapify(nums, 0, heapSize);
+        }
 }
