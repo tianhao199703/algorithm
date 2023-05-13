@@ -29,3 +29,73 @@ public:
 private:
 	TrieNode* root;
 };
+
+// java version
+class Trie {
+    TreeNode root;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        this.root = new TreeNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TreeNode cur = root;
+        for(int i=0;i<word.length();i++){
+            int index = word.charAt(i) - 'a';
+            if(cur.child.get(index) == null){
+                cur.child.set(index,new TreeNode());
+            }
+            cur = cur.child.get(index);
+        }
+        cur.isLeaf = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TreeNode cur = root;
+        for(int i=0;i<word.length();i++){
+            int index = word.charAt(i) - 'a';
+            if(cur.child.get(index) == null){
+                return false;
+            }
+            cur = cur.child.get(index);
+        }
+        return cur.isLeaf;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TreeNode cur = root;
+        for(int i=0;i<prefix.length();i++){
+            int index = prefix.charAt(i) - 'a';
+            if(cur.child.get(index) == null){
+                return false;
+            }
+            cur = cur.child.get(index);
+        }
+        return true;
+    }
+}
+
+class TreeNode{
+    boolean isLeaf;
+    List<TreeNode> child;
+
+    public TreeNode(){
+        isLeaf = false;
+        child = new ArrayList(26);
+        for(int i=0;i<26;i++){
+            child.add(null);
+        }
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
